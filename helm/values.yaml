@@ -43,10 +43,26 @@ nodeSelector: { }
 
 tolerations: [ ]
 
-affinity: { }
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+                - system
+
+secrets:
+  KEY_VAULT_NAME: 'chmstudent0aprodlabkv'
+  TENANT_ID: '3a81269f-0731-42d7-9911-a8e9202fa750'
+  SECRET_PROVIDER_CLIENT_ID: ''
 
 config:
   APP_NAME: 'CHM Status'
   APP_ENV: 'local'
   APP_KEY: 'base64:ToXKAwrnA/5i1WH+X4rduR9RNrmpe/tvC+ZjxjTLJCo='
   APP_DEBUG: 'true'
+  DB_CONNECTION: 'pgsql'
+  LOG_CHANNEL: 'stderr'
+  REDIS_PORT: '6380'

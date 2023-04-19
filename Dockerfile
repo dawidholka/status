@@ -15,9 +15,10 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=roadrunner /usr/bin/rr /usr/bin/rr
 
 # Install packages and remove default server definition
-RUN apk --no-cache add socat libzip-dev libpng-dev linux-headers pcre-dev ${PHPIZE_DEPS} \
+RUN apk --no-cache add socat libzip-dev libpng-dev linux-headers pcre-dev libpq-dev ${PHPIZE_DEPS} \
     curl tzdata htop mysql-client dcron net-tools && \
-    docker-php-ext-install exif pcntl zip gd mysqli pdo pdo_mysql bcmath ctype pdo_mysql pcntl sockets \
+    docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
+    docker-php-ext-install pgsql pdo_pgsql exif pcntl zip gd mysqli pdo pdo_mysql bcmath ctype pdo_mysql pcntl sockets \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && apk del pcre-dev ${PHPIZE_DEPS} \
